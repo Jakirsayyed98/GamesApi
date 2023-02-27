@@ -1,9 +1,8 @@
 const express = require('express');
-const app =express();
+const { UserSignUp, UserSignIn } = require('../controller/UserController');
 const UserRoutes = express.Router();
 
+UserRoutes.post("/signup",UserSignUp)
+UserRoutes.post("/signin",UserSignIn)
 
-UserRoutes.get("/",(req,res)=>{
-    res.status(200).json({user : req.body})
-})
 module.exports = UserRoutes;
