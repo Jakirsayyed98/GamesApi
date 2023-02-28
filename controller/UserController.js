@@ -16,21 +16,24 @@ const UserSignUp = async (req, res) => {
 
         var pass = await bcrypt.hash(password, 10)
 
-        var result = await UserModel.create({
+         await UserModel.create({
             username: username,
             email: email,
             password: pass,
             name: name,
+        }).then((result)=>{
+
+            var tokens = jwt.sign({ id: result._id, email: result.email, password: result.password }, SECRET_KEY)
+
+            return res.status(201).json({
+                message: "SuccessFully registered",
+                errorCode: 1,
+                User: result,
+                token: tokens
+            })
         })
 
-        var tokens = jwt.sign({ username: username, email: email, password: pass }, SECRET_KEY)
-
-        return res.status(201).json({
-            message: "SuccessFully registered",
-            errorCode: 1,
-            User: result,
-            token: tokens
-        })
+     
 
 
     } catch (error) {
@@ -67,7 +70,7 @@ const UserSignIn = async (req, res) => {
         }
 
 
-        var tokens = jwt.sign({ username: username, email: email, password: password }, SECRET_KEY)
+        var tokens = jwt.sign({ id: ExistUser._id, email: ExistUser.email, password:ExistUser.password }, SECRET_KEY)
 
         return res.status(201).json({
             message: "SuccessFully registered",
