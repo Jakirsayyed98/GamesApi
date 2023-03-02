@@ -16,6 +16,14 @@ const Usermodel = mongoose.Schema({
     password:{
         type:String,
         require : true
+    },
+    isVerified:{
+        type:String,
+        default:0
+    },
+    OTP:{
+        type:String,
+        require:true
     }
 },{timestamps:true});
 
