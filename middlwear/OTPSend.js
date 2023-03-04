@@ -21,7 +21,7 @@ module.exports= mailer = (email, otpCode) => {
     let mailOptions = {
       from: 'kanjal@paydoh.money',
       to: email,
-      subject: "OTP To Reset Password",
+      subject: "Your OTP is "+ otpCode,
       html: "<p>Your OTP for Change Password </p>"+ otpCode,
       text: "Thank You!!",
     };
