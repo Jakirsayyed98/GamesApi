@@ -1,31 +1,36 @@
-var Nodemailer = require('nodemailer');
-var Transformer  = Nodemailer.createTransport({
-    host:"smtp.gmail.com",
-    port:465,
-    secure:true,
-    requireTLS:false,
-    
-    tls:false,
-    auth:{
-        user: 'jakirsayyed98@gmail.com',
-        pass: '9221065740'
-    }
-});
+const nodemailer = require('nodemailer')
 
-var mailOption= {
-    from:"jakirsayyed98@gmail.com",
-    to:"jakirsayyed98@gmail.com",
-    html: 'Good Morning!',
-    subject:"OTP for verification",
-    PLAIN:"Hello Your OTP is 5421",
+module.exports= mailer = (email, otpCode) => {
 
+    let transporter = nodemailer.createTransport({
+        host: "smtpout.secureserver.net",  
+        secure: true,
+        secureConnection: false,
+        port: 465,
+        debug: true,
+        requireTLS:true,
+        tls:{
+            ciphers:'SSLv3' //networking between one server to another
+        },
+        auth: {
+            user: 'kanjal@paydoh.money',
+            pass: 'Kanjal@12345'
+        }
+    });
+
+    let mailOptions = {
+      from: 'kanjal@paydoh.money',
+      to: email,
+      subject: "OTP To Reset Password",
+      html: "<p>Your OTP for Change Password </p>"+ otpCode,
+      text: "Thank You!!",
+    };
+
+    transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+          return  console.log(error,"Send Email Error")
+        } else {
+          return  console.log('Email Sent: ' + info.response)
+        }
+    });
 }
-
-Transformer.sendMail(mailOption,function(error,info){
-    if(error){
-        console.log(error)
-    }else{
-        console.log(info.response + " Mailed Send Successfully")
-    }
-})
-

@@ -2,41 +2,47 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const UserModel = require('../models/usermodule')
 var SECRET_KEY = "JAKIR"
+const nodemailer = require('../middlwear/OTPSend')
 
 const UserSignUp = async (req, res) => {
 
-    const { username, name, email, password ,OTP} = req.body;
+    const { username, name, email, password, OTP } = req.body;
 
     try {
 
         const existingUser = await UserModel.findOne({ username: username })
-   
+
 
         if (existingUser) {
             return res.status(400).json({ errorCode: 0, message: "User Already Registerd " })
         }
 
         var pass = await bcrypt.hash(password, 10)
-            var otppin = Math.floor(Math.random() * 9999)
-         await UserModel.create({
+        var otppin = Math.floor(Math.random() * 9999+1000)
+        await UserModel.create({
             username: username,
             email: email,
             password: pass,
             name: name,
-            OTP:otppin
-        }).then((result)=>{
+            OTP: otppin
+        }).then((result) => {
 
-            var tokens = jwt.sign({ id: result._id, email: result.email, password: result.password }, SECRET_KEY)
+            nodemailer(result.email, result.OTP)
+                            var tokens = jwt.sign({ id: result._id, email: result.email, password: result.password }, SECRET_KEY)
 
-            return res.status(201).json({
-                errorMsg: "SuccessFully registered",
-                errorCode: "1",
-                "data": result,
-                token: tokens
+                return res.status(201).json({
+                    errorMsg: "SuccessFully registered",
+                
+                    errorCode: "1",
+                    "data": result,
+                    token: tokens
+                })
             })
-        })
 
-     
+
+        
+
+
 
 
     } catch (error) {
@@ -64,7 +70,7 @@ const UserSignIn = async (req, res) => {
             })
         }
 
-        var passw =await bcrypt.compare(password, ExistUser.password)
+        var passw = await bcrypt.compare(password, ExistUser.password)
         if (!passw) {
             return res.status(401).json({
                 errorCode: "0",
@@ -73,7 +79,7 @@ const UserSignIn = async (req, res) => {
         }
 
 
-        var tokens = jwt.sign({ id: ExistUser._id, email: ExistUser.email, password:ExistUser.password }, SECRET_KEY)
+        var tokens = jwt.sign({ id: ExistUser._id, email: ExistUser.email, password: ExistUser.password }, SECRET_KEY)
 
         return res.status(201).json({
             message: "SuccessFully registered",

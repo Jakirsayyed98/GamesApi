@@ -1,0 +1,3 @@
+username :- jakirsayyed98
+password :- 5ypFCNhcZbYT2QMB
+url:- mongodb+srv://jakirsayyed98:5ypFCNhcZbYT2QMB@cluster0.quz1kf2.mongodb.net/?retryWrites=true&w=majority

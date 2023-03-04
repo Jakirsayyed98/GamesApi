@@ -3,14 +3,24 @@ const app =express();
 const mongooose = require('mongoose');
 const auth = require('./middlwear/middelwear');
 const PORT = process.env.PORT || 2000;
-const url = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.7.0";
+const url =process.env.MONGO_URL || "mongodb+srv://jakirsayyed98:5ypFCNhcZbYT2QMB@cluster0.quz1kf2.mongodb.net/?retryWrites=true&w=majority";
 const UserRoutes = require('./Routes/UserRoute')
+
+
+
+app.get('/games',(req,res)=>{
+    fetch('https://pub.gamezop.com/v3/games?id=4625').then((result)=>{
+        res.json({errorcode:"0",message:"Sucessfull",games:result.json()})
+    })
+})
+
+
 
 app.use(express.json());
 
-app.get("/",auth , (req,res)=>{
-    console.log("Jakir2")
-})
+// app.get("/",auth , (req,res)=>{
+//     console.log("Jakir2")
+// })
 
 app.use('/user',UserRoutes);
 
