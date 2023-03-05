@@ -1,0 +1,74 @@
+const mongoose = require('mongoose')
+
+const gamesModels = mongoose.Schema({
+    code:{
+        require:true,
+        type:String
+    },
+    url:{
+        require:true,
+        type:String
+    },
+    name:{
+        require:true,
+        type:String
+    },
+    isPortrait:{
+        require:true,
+        type:String
+    },
+    description:{
+        require:true,
+        type:String
+    },
+    gamePreviews:{
+        require:true,
+        type:String
+    },
+    assets:{
+        require:true,
+        type:Array
+    },
+    categories:{
+        require:true,
+        type:String
+    },
+    tags:{
+        require:true,
+        type:String
+    },
+    width:{
+        require:true,
+        type:String
+    },
+    height:{
+        require:true,
+        type:String
+    },
+    colorMuted:{
+        require:true,
+        type:String
+    },
+    colorVibrant:{
+        require:true,
+        type:String
+    },
+    privateAllowed:{
+        require:true,
+        type:String
+    },
+    rating:{
+        require:true,
+        type:String
+    },
+    numberOfRatings:{
+        require:true,
+        type:String
+    },
+    gamePlays:{
+        require:true,
+        type:String
+    }
+},{timestemps:true})
+
+module.exports = mongoose.model('AllGames',gamesModels)
