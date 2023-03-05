@@ -15,46 +15,50 @@ app.get("/getGames",(req,res)=>{
 })
 
 
-app.get('/savegames',(req,res)=>{
+app.get('/savegames', (req,res)=>{
 
     fetchUrl("https://pub.gamezop.com/v3/games?id=4625", function(error, meta, body){
         var data = JSON.parse(body.toString())
-        var categoriesdata=[]
+        
         for (const i in data.games){
-            
-            for(const j in data.games[i].categories.en){
-                categoriesdata.push(data.games[i].categories.en[j])
+
+        gamesModels.findOne({code:data.games[i].code}).then((exist)=>{
+            if(!exist){
+                gamesModels.create({
+                
+                    code:data.games[i].code,
+                    url:data.games[i].url,
+                    name:data.games[i].name.en,
+                    isPortrait:data.games[i].isPortrait,
+                    description:data.games[i].description.en,
+                    gamePreviews:data.games[i].gamePreviews.en,
+                    assets:data.games[i].assets,
+                    width:data.games[i].width,
+                    height:data.games[i].height,
+                    colorMuted:data.games[i].colorMuted,
+                    colorVibrant:data.games[i].colorVibrant,
+                    privateAllowed:data.games[i].privateAllowed,
+                    rating:data.games[i].rating,
+                    numberOfRatings:data.games[i].numberOfRatings,
+                    gamePlays:data.games[i].gamePlays
+    
+                    // categories:categoriesdata,
+    
+    
+                    // tags:data.games[i].tags.en.forEach(element => {
+                    //     element
+                    // })
+                   
+                })
+
+            }else{
+                console.log(i+" - this id is exist ")
             }
 
-            gamesModels.create({
-                
-                code:data.games[i].code,
-                url:data.games[i].url,
-                name:data.games[i].name.en,
-                isPortrait:data.games[i].isPortrait,
-                description:data.games[i].description.en,
-                gamePreviews:data.games[i].gamePreviews.en,
-                assets:data.games[i].assets,
-                width:data.games[i].width,
-                height:data.games[i].height,
-                colorMuted:data.games[i].colorMuted,
-                colorVibrant:data.games[i].colorVibrant,
-                privateAllowed:data.games[i].privateAllowed,
-                rating:data.games[i].rating,
-                numberOfRatings:data.games[i].numberOfRatings,
-                gamePlays:data.games[i].gamePlays
-
-                // categories:data.games[i].categories.en,
-
-
-                // tags:data.games[i].tags.en.forEach(element => {
-                //     element
-                // })
-               
-            }).then((result)=>{
-            //     categoriesdata.splice()
-            //    res.json({errorcode:"0",message:"Sucessfull",data:result})
             })
+
+        
+          
         }
 
         });
