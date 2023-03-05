@@ -12,17 +12,16 @@ const auth = (req,res,next)=>{
             var result  = jwt.verify(token,SECRET_KEY)
 
             req.user_id = result.id
-    
-
+            
         }else{
-            res.status(500).json({message:"Unathorized user"});
+          return  res.status(500).json({message:"Unathorized user"});
         }
 
         next()
 
     } catch (error) {
         console.log(error)
-        res.status(500).json({message:error});
+       return res.status(500).json({message:error});
     }
 
 }

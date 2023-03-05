@@ -17,7 +17,7 @@ const UserSignUp = async (req, res) => {
             return res.status(400).json({ errorCode: 0, message: "User Already Registerd " })
         }
 
-        var pass = await bcrypt.hash(password, 10)
+        var pass = await bcrypt.hash(password, 5)
         var otppin = Math.floor(Math.random() * 9999 + 1000)
         await UserModel.create({
             username: username,
