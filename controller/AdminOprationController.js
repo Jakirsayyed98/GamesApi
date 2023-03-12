@@ -1,5 +1,6 @@
 
 var fetchUrl = require("fetch").fetchUrl;
+const gamesModel = require("../models/gamesModel");
 var gamesModels = require('../models/gamesModel');
 
 const saveGames =  (req,res)=>{
@@ -47,6 +48,8 @@ const saveGames =  (req,res)=>{
         
           
         }
+
+        
 
         });
 

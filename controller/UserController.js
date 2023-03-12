@@ -10,7 +10,7 @@ const UserSignUp = async (req, res) => {
 
     try {
 
-        const existingUser = await UserModel.findOne({ username: username })
+        const existingUser = await UserModel.findOne({ email: email })
 
 
         if (existingUser) {
@@ -27,23 +27,17 @@ const UserSignUp = async (req, res) => {
             OTP: otppin
         }).then((result) => {
 
-            nodemailer(result.email, result.OTP)
+      //      nodemailer(result.email, result.OTP)
             var tokens = jwt.sign({ id: result._id, email: result.email, password: result.password }, SECRET_KEY)
 
             return res.status(201).json({
                 errorMsg: "SuccessFully registered",
 
                 errorCode: "1",
-                "data": result,
+                data: result,
                 token: tokens
             })
         })
-
-
-
-
-
-
 
     } catch (error) {
         console.log(error)
@@ -57,25 +51,19 @@ const UserSignUp = async (req, res) => {
 
 const UserSignIn = async (req, res) => {
 
-    const { username, name, email, password } = req.body;
+    const { email, password } = req.body;
 
     try {
 
         const ExistUser = await UserModel.findOne({ email: email })
 
         if (!ExistUser) {
-            return res.status(401).json({
-                errorCode: "0",
-                message: "User Not Exist"
-            })
+            return res.status(401).json({errorCode: "0",message: "User Not Exist"  })
         }
 
         var passw = await bcrypt.compare(password, ExistUser.password)
         if (!passw) {
-            return res.status(401).json({
-                errorCode: "0",
-                message: "Invalid Credintials"
-            })
+            return res.status(401).json({errorCode: "0",message: "Invalid Credintials"})
         }
 
 

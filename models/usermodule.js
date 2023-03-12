@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const gamesModels = require('../models/gamesModel')
 
 const Usermodel = mongoose.Schema({
     username:{
@@ -23,6 +24,11 @@ const Usermodel = mongoose.Schema({
     },
     OTP:{
         type:String,
+        require:true
+    },
+    Recent:{
+        type:Array,
+        default:[],
         require:true
     }
 },{timestamps:true});
